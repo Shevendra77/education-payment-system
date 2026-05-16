@@ -1,0 +1,15 @@
+# Maven build
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files (agar kabhi bana bhi liya toh)
+.env
+*.env

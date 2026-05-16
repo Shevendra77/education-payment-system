@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  cfs-payment-mysql:
+    image: mysql:8.0
+    container_name: cfs-payment-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: payment_db
+    ports:
+      - "3308:3306"
+    volumes:
+      - cfs-payment-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cfs-notification-mysql:
+    image: mysql:8.0
+    container_name: cfs-notification-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: notification_db
+    ports:
+      - "3309:3306"
+    volumes:
+      - cfs-notification-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cfs-payment-mysql-data:
+  cfs-notification-mysql-data:
