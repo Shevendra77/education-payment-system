@@ -1,105 +1,228 @@
-# Education Payment System
+# 🎓 Education Payment System
 
-A microservices-based Education Payment System built using Spring Boot, Apache Kafka, Docker, MySQL, and Razorpay integration.
+A production-style microservices-based Education Payment System built using Spring Boot, Apache Kafka, Docker, MySQL, and Razorpay integration.
 
-## 🚀 Features
+This project demonstrates event-driven architecture, asynchronous communication between services, secure environment-based configuration, and payment workflow integration commonly used in modern backend systems.
 
-- Course payment processing
-- Razorpay payment gateway integration
-- Kafka-based event-driven communication
-- Email notification service
-- Dockerized MySQL databases
-- Secure environment variable configuration
+---
+
+# 📌 Project Overview
+
+The system allows students to purchase courses through an online payment workflow.
+
+After successful payment:
+1. PaymentService processes the payment
+2. A Kafka event is published
+3. NotificationService consumes the event
+4. Email notification is sent to the student
+5. Notification logs are stored in the database
+
+---
+
+# 🏗️ System Architecture
+
+```text
+┌─────────────┐
+│  Frontend   │
+└──────┬──────┘
+       │ REST API
+       ▼
+┌──────────────────┐
+│  PaymentService  │
+└──────┬───────────┘
+       │
+       │ Razorpay Integration
+       ▼
+┌──────────────────┐
+│ Payment Gateway  │
+└──────┬───────────┘
+       │
+       │ Kafka Producer
+       ▼
+┌──────────────────┐
+│   Apache Kafka   │
+└──────┬───────────┘
+       │ Kafka Consumer
+       ▼
+┌──────────────────────┐
+│ NotificationService  │
+└─────────┬────────────┘
+          │
+          ▼
+   Email Notification
+```
+
+---
+
+# 🚀 Features
+
 - Microservices architecture
+- Event-driven communication
+- Apache Kafka producer/consumer implementation
+- Razorpay payment gateway integration
+- Email notification system
+- Dockerized MySQL databases
+- Environment variable based configuration
+- Automated startup scripts
+- Database persistence
+- Secure secret management
+- GitHub-ready project structure
 
 ---
 
-# 🏗️ Architecture
+# 🛠️ Tech Stack
 
-Frontend
-↓
-PaymentService
-↓
-Razorpay Payment Gateway
-↓
-Apache Kafka
-↓
-NotificationService
-↓
-Email Notification
-
----
-
-# 🛠️ Technologies Used
-
+## Backend
 - Java 17
 - Spring Boot
+- Spring Data JPA
 - Spring Kafka
-- MySQL
-- Docker
+
+## Messaging
 - Apache Kafka
+
+## Database
+- MySQL 8
+
+## DevOps / Infrastructure
+- Docker
+- Docker Compose
+- PowerShell Automation
+
+## Payment Gateway
 - Razorpay API
+
+## Build Tool
 - Maven
-- PowerShell
-- Git & GitHub
+
+## Version Control
+- Git
+- GitHub
 
 ---
 
 # 📦 Microservices
 
-## 1. PaymentService
+## 1️⃣ PaymentService
 
-Responsibilities:
-- Create Razorpay orders
+### Responsibilities
+- Create Razorpay payment orders
 - Handle payment processing
 - Publish Kafka events
-- Store payment details
+- Persist payment details
 
-Runs on:
+### Runs On
 
+```text
 http://localhost:8080
+```
 
 ---
 
-## 2. NotificationService
+## 2️⃣ NotificationService
 
-Responsibilities:
+### Responsibilities
 - Consume Kafka events
 - Send email notifications
-- Store notification logs
+- Persist notification logs
 
-Runs on:
+### Runs On
 
+```text
 http://localhost:8082
+```
 
 ---
 
-# 🗄️ Databases
+# 🗄️ Database Configuration
 
-| Database | Port |
+| Database | Container | Port |
+|----------|-----------|------|
+| payment_db | cfs-payment-mysql | 3308 |
+| notification_db | cfs-notification-mysql | 3309 |
+
+---
+
+# 📨 Kafka Configuration
+
+| Property | Value |
 |----------|------|
-| payment_db | 3308 |
-| notification_db | 3309 |
-
----
-
-# 📨 Kafka
-
-Kafka runs on:
-
-localhost:9092
-
-Topic used:
-
-course-enrollment-notification
+| Broker | localhost:9092 |
+| Topic | course-enrollment-notification |
 
 ---
 
 # 🔐 Environment Variables
 
-Create a `.env` file in the project root.
+Create a `.env` file in the project root directory.
 
 Example:
+
+```env
+DB_PASSWORD=root
+
+RAZORPAY_KEY_ID=your_razorpay_key
+RAZORPAY_KEY_SECRET=your_razorpay_secret
+
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+```
+
+---
+
+# 📁 Project Structure
+
+```text
+Education Payment System/
+│
+├── PaymentService/
+│
+├── NotificationService/
+│
+├── docker-compose.yml
+├── start.ps1
+├── stop.ps1
+├── .env
+├── .gitignore
+└── README.md
+```
+
+---
+
+# ▶️ Running the Project Locally
+
+## Prerequisites
+
+Ensure the following are installed:
+
+- Java 17+
+- Maven
+- Docker Desktop
+- Git
+
+---
+
+# Step 1 — Clone Repository
+
+```bash
+git clone https://github.com/Shevendra77/education-payment-system.git
+```
+
+```bash
+cd education-payment-system
+```
+
+---
+
+# Step 2 — Configure Environment Variables
+
+Create:
+
+```text
+.env
+```
+
+Add:
 
 ```env
 DB_PASSWORD=root
@@ -113,9 +236,7 @@ MAIL_PASSWORD=your_app_password
 
 ---
 
-# ▶️ Running the Project Locally
-
-## 1. Start Docker Containers
+# Step 3 — Start Docker Containers
 
 ```powershell
 docker start cfs-payment-mysql
@@ -125,7 +246,7 @@ docker start kafka
 
 ---
 
-## 2. Run PowerShell Script
+# Step 4 — Start Application
 
 ```powershell
 .\start.ps1
@@ -133,21 +254,18 @@ docker start kafka
 
 ---
 
-## 3. Access Services
+# Step 5 — Access Services
 
-PaymentService:
-
-http://localhost:8080
-
-NotificationService:
-
-http://localhost:8082
+| Service | URL |
+|---------|-----|
+| PaymentService | http://localhost:8080 |
+| NotificationService | http://localhost:8082 |
 
 ---
 
-# 🧪 Testing
+# 🧪 Database Verification
 
-## Verify Payment Database
+## Payment Database
 
 ```powershell
 docker exec -it cfs-payment-mysql mysql -uroot -proot
@@ -155,12 +273,13 @@ docker exec -it cfs-payment-mysql mysql -uroot -proot
 
 ```sql
 USE payment_db;
+SHOW TABLES;
 SELECT * FROM payment_orders;
 ```
 
 ---
 
-## Verify Notification Database
+## Notification Database
 
 ```powershell
 docker exec -it cfs-notification-mysql mysql -uroot -proot
@@ -168,46 +287,75 @@ docker exec -it cfs-notification-mysql mysql -uroot -proot
 
 ```sql
 USE notification_db;
+SHOW TABLES;
 SELECT * FROM notification_logs;
 ```
 
 ---
 
-# 📚 What I Learned
+# 🔄 Event Flow
 
-- Microservices architecture
-- Event-driven systems
-- Apache Kafka producer/consumer
-- Docker containerization
-- Payment gateway integration
-- Environment variable security
-- Git & GitHub workflow
-- Spring Boot backend development
-
----
-
-# 🔒 Security Notes
-
-- Secrets are managed using environment variables
-- `.env` is excluded using `.gitignore`
-- API keys are not committed to GitHub
+```text
+1. User initiates payment
+2. PaymentService creates Razorpay order
+3. Payment succeeds
+4. Kafka event is published
+5. NotificationService consumes event
+6. Email notification sent
+7. Notification logs stored
+```
 
 ---
 
-# 📌 Future Improvements
+# 🔒 Security
 
-- JWT Authentication
+- Secrets managed using environment variables
+- `.env` excluded using `.gitignore`
+- API keys are never committed to GitHub
+- Sensitive credentials externalized from source code
+
+---
+
+# 📚 Key Learning Outcomes
+
+This project demonstrates practical implementation of:
+
+- Microservices Architecture
+- Event-Driven Systems
+- Apache Kafka Messaging
+- Asynchronous Communication
+- Docker Containerization
+- Payment Gateway Integration
+- Environment-Based Configuration
+- Service Decoupling
+- Git & GitHub Workflow
+
+---
+
+# 🚧 Future Enhancements
+
+- JWT Authentication & Authorization
 - API Gateway
+- Service Discovery
 - Kubernetes Deployment
 - CI/CD Pipeline
-- Swagger Documentation
+- Swagger/OpenAPI Documentation
 - Redis Caching
+- Centralized Logging
+- Monitoring & Observability
+- Retry & Dead Letter Queue handling
 
 ---
 
 # 👨‍💻 Author
 
-Shevendra Chandel
+## Shevendra Chandel
 
 GitHub:
 https://github.com/Shevendra77
+
+---
+
+# ⭐ If You Like This Project
+
+Consider giving this repository a star on GitHub.
