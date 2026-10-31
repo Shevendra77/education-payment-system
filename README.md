@@ -31,58 +31,9 @@ The application consists of three independent microservices:
 
 ## 🏗️ System Architecture
 
-```mermaid
-flowchart TB
-    USER(["User"])
-    FE["Frontend Application"]
-
-    subgraph AUTH["Authentication Service"]
-        AS["AuthService"]
-        JWT["JWT Authentication"]
-        OAUTH["Google OAuth 2.0 / OIDC"]
-        ADB[("Auth Database<br/>auth_db")]
-        AS --> JWT
-        AS --> OAUTH
-        AS <--> ADB
-    end
-
-    subgraph PAY["Payment Service"]
-        PS["PaymentService"]
-        RZ["Razorpay Gateway"]
-        PDB[("Payment Database<br/>payment_db")]
-        PS --> RZ
-        PS <--> PDB
-    end
-
-    KAFKA[["Apache Kafka<br/>Event Broker"]]
-
-    subgraph NOTIFY["Notification Service"]
-        NS["NotificationService"]
-        EMAIL["Email Service"]
-        NDB[("Notification Database<br/>notification_db")]
-        NS --> EMAIL
-        NS <--> NDB
-    end
-
-    USER --> FE
-    FE -->|"Register / Login"| AS
-    AS -->|"JWT Token"| FE
-    FE -->|"Payment Request + JWT"| PS
-    PS -->|"Payment Event"| KAFKA
-    KAFKA -->|"Consume Event"| NS
-
-    classDef frontend fill:#e8f1ff,stroke:#2563eb,color:#1e3a8a
-    classDef auth fill:#f3e8ff,stroke:#9333ea,color:#581c87
-    classDef payment fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef notify fill:#fff7ed,stroke:#ea580c,color:#9a3412
-    classDef broker fill:#fef9c3,stroke:#ca8a04,color:#713f12
-
-    class USER,FE frontend
-    class AS,JWT,OAUTH,ADB auth
-    class PS,RZ,PDB payment
-    class NS,EMAIL,NDB notify
-    class KAFKA broker
-```
+<p align="center">
+  <img src="docs/architecture.svg" alt="Education Payment System Architecture" width="700">
+</p>
 
 ---
 
