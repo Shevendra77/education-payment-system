@@ -2,6 +2,9 @@ version: '3.8'
 
 services:
 
+  # ==========================================
+  # 1. Payment Database
+  # ==========================================
   cfs-payment-mysql:
     image: mysql:8.0
     container_name: cfs-payment-mysql
@@ -13,11 +16,14 @@ services:
     volumes:
       - cfs-payment-mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  # ==========================================
+  # 2. Notification Database
+  # ==========================================
   cfs-notification-mysql:
     image: mysql:8.0
     container_name: cfs-notification-mysql
@@ -29,7 +35,26 @@ services:
     volumes:
       - cfs-notification-mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # 3. Auth Database
+  # ==========================================
+  cfs-auth-mysql:
+    image: mysql:8.0
+    container_name: cfs-auth-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth_db
+    ports:
+      - "3310:3306"
+    volumes:
+      - cfs-auth-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -37,3 +62,4 @@ services:
 volumes:
   cfs-payment-mysql-data:
   cfs-notification-mysql-data:
+  cfs-auth-mysql-data:
