@@ -31,8 +31,8 @@ The application consists of three independent microservices:
 
 ## 🏗️ System Architecture
 
-```text
-                    flowchart TB
+```mermaid
+flowchart TB
     USER(["User"])
     FE["Frontend Application"]
 
