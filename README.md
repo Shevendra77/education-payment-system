@@ -32,7 +32,7 @@ The application consists of three independent microservices:
 ## 🏗️ System Architecture
 
 <p align="center">
-  <img src="docs/architecture.png" alt="Education Payment System Architecture" width="700">
+  <img src="docs/education_payment_system_architecture.png" alt="Education Payment System Architecture" width="700">
 </p>
 
 ---
